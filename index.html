@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>大学生のくせに畑はじめました | やました農園</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=RocknRoll+One&family=Kaisei+Tokumin:wght@400;700;800&family=Noto+Sans+JP:wght@300;400;700&family=Bebas+Neue&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg:        #ffffff;
+            --bg-mid:    #f4f7ee;
+            --bg-card:   #eaf0df;
+            --green:     #3d8016;
+            --green-dim: #2e6010;
+            --green-lt:  #d4e8b8;
+            --accent:    #c07818;
+            --text:      #1e2e0a;
+            --muted:     #627848;
+            --border:    rgba(61,128,22,.2);
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Noto Sans JP', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .nav-logo, .hero-title, .sec-title, .quote, .vege-name, .ft-logo {
+            font-family: 'RocknRoll One', 'Noto Sans JP', sans-serif;
+        }
+
+        /* ── NAV ── */
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 999;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 6%;
+            background: rgba(255,255,255,0.96);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid var(--border);
+            box-shadow: 0 2px 12px rgba(61,128,22,.08);
+        }
+        .nav-brand { display: flex; flex-direction: column; gap: .1rem; }
+        .nav-logo {
+            font-size: .9rem;
+            font-weight: 700;
+            color: var(--green);
+            letter-spacing: .05em;
+        }
+        .nav-sub {
+            font-size: .62rem;
+            color: var(--muted);
+            letter-spacing: .12em;
+        }
+        .nav-links { list-style: none; display: flex; gap: 2.2rem; }
+        .nav-links a {
+            text-decoration: none;
+            font-size: .75rem;
+            font-weight: 400;
+            color: var(--muted);
+            letter-spacing: .15em;
+            text-transform: uppercase;
+            transition: color .25s;
+        }
+        .nav-links a:hover { color: var(--green); }
+
+        /* ── HERO ── */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 10rem 6% 6rem;
+            position: relative;
+            overflow: hidden;
+            background-image: url('images/hero-top.png');
+            background-size: cover;
+            background-position: center 40%;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to right, rgba(255,255,255,0.93) 40%, rgba(255,255,255,0.4) 100%);
+            pointer-events: none;
+        }
+        .hero-eyebrow {
+            font-size: .72rem;
+            color: var(--green);
+            letter-spacing: .45em;
+            text-transform: uppercase;
+            margin-bottom: 1.4rem;
+            position: relative; z-index: 1;
+        }
+        .hero-title {
+            font-size: clamp(2.4rem, 5.5vw, 6.2rem);
+            font-weight: 400;
+            line-height: 1.12;
+            margin-bottom: 1.2rem;
+            position: relative; z-index: 1;
+            color: var(--text);
+        }
+        .hero-title .line-green { color: var(--green); }
+        .hero-name {
+            font-size: clamp(1rem, 2vw, 1.6rem);
+            font-weight: 700;
+            color: var(--green);
+            letter-spacing: .15em;
+            margin-bottom: 1rem;
+            position: relative; z-index: 1;
+            font-family: 'RocknRoll One', sans-serif;
+        }
+        .hero-sub {
+            font-size: clamp(.82rem, 1.2vw, 1rem);
+            font-weight: 300;
+            color: var(--muted);
+            letter-spacing: .08em;
+            margin-bottom: 2.8rem;
+            position: relative; z-index: 1;
+            line-height: 1.9;
+        }
+        .btn-outline {
+            display: inline-block;
+            padding: .9rem 2.4rem;
+            border: 2px solid var(--green);
+            color: var(--green);
+            text-decoration: none;
+            font-size: .78rem;
+            font-weight: 700;
+            letter-spacing: .25em;
+            text-transform: uppercase;
+            transition: background .25s, color .25s;
+            position: relative; z-index: 1;
+        }
+        .btn-outline:hover { background: var(--green); color: #fff; }
+        .hero-bg-text {
+            position: absolute;
+            right: 3%;
+            bottom: 3%;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(8rem, 22vw, 24rem);
+            color: rgba(61,128,22,.055);
+            line-height: 1;
+            user-select: none;
+            pointer-events: none;
+        }
+        .scroll-hint {
+            position: absolute;
+            bottom: 2.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: .5rem;
+        }
+        .scroll-hint span { font-size: .62rem; letter-spacing: .3em; color: var(--muted); }
+        .scroll-line {
+            width: 1px; height: 48px;
+            background: linear-gradient(to bottom, var(--green), transparent);
+            animation: drip 2s ease-in-out infinite;
+        }
+        @keyframes drip {
+            0%   { transform: scaleY(0); transform-origin: top; opacity: 1; }
+            50%  { transform: scaleY(1); transform-origin: top; opacity: 1; }
+            100% { transform: scaleY(1); transform-origin: bottom; opacity: 0; }
+        }
+
+        /* ── SECTION BASE ── */
+        section { padding: 7rem 6%; }
+        .label {
+            font-size: .68rem;
+            color: var(--green);
+            letter-spacing: .55em;
+            text-transform: uppercase;
+            margin-bottom: .9rem;
+        }
+        .sec-title {
+            font-size: clamp(1.8rem, 3.8vw, 3.4rem);
+            font-weight: 900;
+            line-height: 1.15;
+            margin-bottom: 1.6rem;
+            color: var(--text);
+        }
+
+        /* ── ABOUT ── */
+        #about {
+            background: var(--bg-mid);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5rem;
+            align-items: center;
+        }
+        .about-photos {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: .5rem;
+        }
+        .about-photo {
+            aspect-ratio: 2/3;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            overflow: hidden;
+        }
+        .about-photo img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            object-position: center;
+        }
+        .quote {
+            border-left: 4px solid var(--green);
+            padding-left: 1.4rem;
+            font-size: clamp(1rem, 1.8vw, 1.4rem);
+            font-weight: 700;
+            line-height: 1.9;
+            margin-bottom: 1.8rem;
+            font-family: 'Kaisei Tokumin', 'Noto Sans JP', serif;
+            color: var(--text);
+        }
+        .quote .hl { color: var(--green); }
+        .about-body {
+            font-size: .9rem;
+            font-weight: 300;
+            color: var(--muted);
+            line-height: 2.3;
+            margin-bottom: 1.8rem;
+        }
+        .tags { display: flex; flex-wrap: wrap; gap: .5rem; }
+        .tag {
+            padding: .35rem .9rem;
+            border: 1px solid rgba(61,128,22,.4);
+            border-radius: 100px;
+            font-size: .7rem;
+            color: var(--green);
+            background: rgba(61,128,22,.06);
+        }
+
+        /* ── VEGETABLES ── */
+        #vegetables { background: var(--bg); }
+        .vege-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
+            gap: .4rem;
+            margin-top: 3rem;
+        }
+        .vege-card {
+            background: var(--bg-mid);
+            border: 1px solid var(--border);
+            padding: .5rem .3rem;
+            text-align: center;
+            transition: border-color .25s, transform .25s, background .25s;
+            cursor: default;
+        }
+        .vege-card:hover {
+            border-color: var(--green);
+            transform: translateY(-3px);
+            background: var(--green-lt);
+        }
+        .vege-emoji { font-size: 1.8rem; display: block; margin-bottom: .2rem; }
+        .vege-name { font-size: .65rem; color: var(--muted); }
+
+        /* ── GALLERY ── */
+        #gallery { background: var(--bg-mid); }
+        .gallery-label { margin-bottom: 1rem; }
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: .5rem;
+            margin-top: 2.5rem;
+            max-width: 70%;
+        }
+        .g-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            aspect-ratio: 1;
+            overflow: hidden;
+            transition: border-color .25s;
+        }
+        .g-item img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            transition: transform .4s;
+            display: block;
+        }
+        .g-item:hover { border-color: var(--green); }
+        .g-item:hover img { transform: scale(1.05); }
+
+        /* ── ANIME ── */
+        #anime { background: var(--bg); }
+        .anime-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: .5rem;
+            margin-top: 2rem;
+        }
+        .anime-item {
+            aspect-ratio: 1;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            background: var(--bg-mid);
+            transition: border-color .25s;
+        }
+        .anime-item:hover { border-color: var(--green); }
+        .anime-item img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            transition: transform .4s;
+            display: block;
+        }
+        .anime-item:hover img { transform: scale(1.06); }
+
+        /* ── AP GALLERY ── */
+        #ap-gallery { background: var(--bg); }
+        .ap-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: .5rem;
+            margin-top: 2.5rem;
+            max-width: 75%;
+        }
+        .ap-item {
+            aspect-ratio: 1;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            background: var(--bg-mid);
+        }
+        .ap-item img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            transition: transform .4s;
+            display: block;
+        }
+        .ap-item:hover img { transform: scale(1.06); }
+
+        /* ── SALES ── */
+        #sales {
+            background: var(--bg-mid);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5rem;
+            align-items: start;
+        }
+        .info-list { list-style: none; margin-top: 2.5rem; }
+        .info-list li {
+            display: flex;
+            gap: 1.8rem;
+            padding: 1.4rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .i-label {
+            font-size: .68rem;
+            font-weight: 700;
+            color: var(--green);
+            letter-spacing: .15em;
+            min-width: 68px;
+            padding-top: .2rem;
+            text-transform: uppercase;
+        }
+        .i-val { font-size: .88rem; font-weight: 300; color: var(--text); line-height: 2; }
+        .i-val.soon { color: var(--muted); font-size: .82rem; }
+        .map-ph {
+            margin-top: 3rem;
+            aspect-ratio: 4/3;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: .8rem;
+            color: var(--muted);
+            font-size: .8rem;
+            letter-spacing: .12em;
+            overflow: hidden;
+        }
+        .map-ph img { width: 100%; height: 100%; object-fit: cover; opacity: .85; }
+
+        /* ── CONTACT ── */
+        #contact { background: var(--bg); text-align: center; }
+        #contact .sec-title { margin-bottom: .8rem; }
+        .contact-note {
+            font-size: .9rem;
+            font-weight: 300;
+            color: var(--muted);
+            margin-bottom: 2.5rem;
+            line-height: 2;
+        }
+        .coming-box {
+            display: inline-block;
+            padding: 1.2rem 3rem;
+            border: 1px solid var(--border);
+            color: var(--muted);
+            font-size: .78rem;
+            letter-spacing: .3em;
+            text-transform: uppercase;
+            background: var(--bg-mid);
+        }
+
+        /* ── FOOTER ── */
+        footer {
+            background: var(--text);
+            padding: 3rem 6%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .ft-logo { font-size: .95rem; font-weight: 700; color: var(--green-lt); }
+        .ft-sub  { font-size: .7rem; color: rgba(255,255,255,.45); margin-top: .3rem; }
+        .ft-copy { font-size: .7rem; color: rgba(255,255,255,.35); }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 900px) {
+            nav { padding: 1rem 5%; }
+            .nav-links { display: none; }
+            section { padding: 5rem 5%; }
+            #about { grid-template-columns: 1fr; gap: 3rem; }
+            .about-photos { grid-template-columns: repeat(3, 1fr); }
+            .gallery-grid { grid-template-columns: repeat(2,1fr); }
+            .g-item.wide { grid-column: span 2; }
+            .ap-grid { grid-template-columns: repeat(2, 1fr); }
+            #sales { grid-template-columns: 1fr; gap: 2.5rem; }
+            footer { flex-direction: column; gap: 1rem; text-align: center; }
+        }
+        @media (max-width: 500px) {
+            .gallery-grid { grid-template-columns: 1fr; }
+            .g-item.wide { grid-column: span 1; aspect-ratio: 4/3; }
+            .ap-grid { grid-template-columns: repeat(2,1fr); }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ─── NAV ─── -->
+<nav>
+    <div class="nav-brand">
+        <div class="nav-logo">やました農園</div>
+        <div class="nav-sub">大学生のくせに畑はじめました</div>
+    </div>
+    <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#vegetables">Vegetables</a></li>
+        <li><a href="#gallery">Gallery</a></li>
+        <li><a href="#sales">Sales</a></li>
+        <li><a href="#contact">Contact</a></li>
+    </ul>
+</nav>
+
+<!-- ─── HERO ─── -->
+<section class="hero" id="hero">
+    <p class="hero-eyebrow">Yamashita Farm — やました農園 — 低農薬栽培</p>
+    <h1 class="hero-title">
+        大学生のくせに<br>
+        <span class="line-green">畑はじめました</span>
+    </h1>
+    <p class="hero-name">やました農園</p>
+    <p class="hero-sub">
+        すずかけ台駅の近く、東京都町田市で低農薬にこだわった野菜を育てています。<br>
+        土と向き合いながら、畑で闘っています。
+    </p>
+    <a href="#about" class="btn-outline">Scroll to Explore</a>
+    <div class="hero-bg-text">農</div>
+    <div class="scroll-hint">
+        <div class="scroll-line"></div>
+        <span>SCROLL</span>
+    </div>
+</section>
+
+<!-- ─── ABOUT ─── -->
+<section id="about">
+    <div class="about-photos">
+        <div class="about-photo">
+            <img src="images/farm_work.jpg" alt="野菜の世話をする">
+        </div>
+        <div class="about-photo">
+            <img src="images/farm_seedlings.jpg" alt="定植した苗">
+        </div>
+        <div class="about-photo">
+            <img src="images/farm_rows.jpg" alt="畝を整えた農園">
+        </div>
+    </div>
+    <div>
+        <p class="label">About</p>
+        <h2 class="sec-title">やました農園について</h2>
+        <blockquote class="quote">
+            「大学生だって、<br>
+            <span class="hl">本気で農業できる。</span><br>
+            低農薬で、丁寧に。」
+        </blockquote>
+        <p class="about-body">
+            川崎市・熊谷市・さいたま市など、いくつかの街で育ちました。<br>
+            なんだかんだで、農業の道へ踏み出しました。<br>
+            野菜栽培やってみたら、これが楽しくてやめられない。<br><br>
+            化学肥料をできるだけ使わず、<br>
+            土の力を信じた低農薬の栽培にこだわっています。<br>
+            私の野菜を好んでいただける方に、<br>
+            新鮮な野菜をお届けしています。<br>
+            軽トラで地域のみなさんのもとへ。
+        </p>
+        <div class="tags">
+            <span class="tag">やました農園</span>
+            <span class="tag">大学生農家</span>
+            <span class="tag">低農薬</span>
+            <span class="tag">すずかけ台</span>
+            <span class="tag">軽トラ直売</span>
+            <span class="tag">丁寧な栽培</span>
+        </div>
+    </div>
+</section>
+
+<!-- ─── VEGETABLES ─── -->
+<section id="vegetables">
+    <p class="label">Vegetables</p>
+    <h2 class="sec-title">育てている野菜</h2>
+    <div class="vege-grid">
+        <div class="vege-card"><span class="vege-emoji">🍉</span><span class="vege-name">すいか</span></div>
+        <div class="vege-card"><span class="vege-emoji">🌽</span><span class="vege-name">とうもろこし</span></div>
+        <div class="vege-card"><span class="vege-emoji">🥒</span><span class="vege-name">きゅうり</span></div>
+        <div class="vege-card"><span class="vege-emoji">🍅</span><span class="vege-name">トマト</span></div>
+        <div class="vege-card"><span class="vege-emoji">🍆</span><span class="vege-name">なす</span></div>
+        <div class="vege-card"><span class="vege-emoji">🫘</span><span class="vege-name">いんげん</span></div>
+        <div class="vege-card"><span class="vege-emoji">🫑</span><span class="vege-name">ピーマン</span></div>
+        <div class="vege-card"><span class="vege-emoji">🍠</span><span class="vege-name">京芋</span></div>
+        <div class="vege-card"><span class="vege-emoji">🥔</span><span class="vege-name">じゃがいも</span></div>
+        <div class="vege-card"><span class="vege-emoji">🎃</span><span class="vege-name">かぼちゃ</span></div>
+        <div class="vege-card"><span class="vege-emoji">🫛</span><span class="vege-name">枝豆</span></div>
+        <div class="vege-card"><span class="vege-emoji">🧄</span><span class="vege-name">にんにく</span></div>
+        <div class="vege-card"><span class="vege-emoji">🧅</span><span class="vege-name">たまねぎ</span></div>
+        <div class="vege-card"><span class="vege-emoji">🫛</span><span class="vege-name">スナップエンドウ</span></div>
+        <div class="vege-card"><span class="vege-emoji">🎋</span><span class="vege-name">たけのこ</span></div>
+        <div class="vege-card"><span class="vege-emoji">🌿</span><span class="vege-name">春菊</span></div>
+        <div class="vege-card"><span class="vege-emoji">🥬</span><span class="vege-name">白菜</span></div>
+        <div class="vege-card"><span class="vege-emoji">🥦</span><span class="vege-name">ブロッコリー</span></div>
+    </div>
+</section>
+
+<!-- ─── GALLERY ─── -->
+<section id="gallery">
+    <p class="label gallery-label">Gallery</p>
+    <h2 class="sec-title">畑のようす</h2>
+    <div class="gallery-grid">
+        <div class="g-item">
+            <img src="images/hata01.jpg" alt="畑のようす1">
+        </div>
+        <div class="g-item">
+            <img src="images/hata02.jpg" alt="畑のようす2">
+        </div>
+        <div class="g-item">
+            <img src="images/hata03.jpg" alt="畑のようす3">
+        </div>
+        <div class="g-item">
+            <img src="images/hata04.jpg" alt="畑のようす4">
+        </div>
+        <div class="g-item">
+            <img src="images/hata05.jpg" alt="畑のようす5">
+        </div>
+        <div class="g-item">
+            <img src="images/farm-tiller.jpg" alt="菜の花と耕運機">
+        </div>
+    </div>
+</section>
+
+<!-- ─── ANIME ─── -->
+<section id="anime">
+    <p class="label">Anime</p>
+    <h2 class="sec-title">オレがんばってる</h2>
+    <div class="anime-grid">
+        <a class="anime-item" href="images/anime01.png" target="_blank">
+            <img src="images/anime01.png" alt="アニメ1">
+        </a>
+        <a class="anime-item" href="images/anime02.png" target="_blank">
+            <img src="images/anime02.png" alt="アニメ2">
+        </a>
+        <a class="anime-item" href="images/anime03.png" target="_blank">
+            <img src="images/anime03.png" alt="アニメ3">
+        </a>
+        <a class="anime-item" href="images/anime04.png" target="_blank">
+            <img src="images/anime04.png" alt="アニメ4">
+        </a>
+        <a class="anime-item" href="images/anime05.png" target="_blank">
+            <img src="images/anime05.png" alt="アニメ5">
+        </a>
+        <a class="anime-item" href="images/anime06.png" target="_blank">
+            <img src="images/anime06.png" alt="アニメ6">
+        </a>
+    </div>
+</section>
+
+<!-- ─── AMAZON PHOTOS GALLERY ─── -->
+<section id="ap-gallery">
+    <p class="label">Gallery</p>
+    <h2 class="sec-title">農園の記録</h2>
+    <div class="coming-box" style="margin-top:2rem;">🌱 作成中 — Coming Soon</div>
+</section>
+
+<!-- ─── SALES ─── -->
+<section id="sales">
+    <div>
+        <p class="label">Sales Info</p>
+        <h2 class="sec-title">販売情報</h2>
+        <ul class="info-list">
+            <li>
+                <span class="i-label">Farm</span>
+                <span class="i-val">やました農園</span>
+            </li>
+            <li>
+                <span class="i-label">Area</span>
+                <span class="i-val">すずかけ台駅の近く</span>
+            </li>
+            <li>
+                <span class="i-label">Method</span>
+                <span class="i-val">軽トラ直売</span>
+            </li>
+            <li>
+                <span class="i-label">Feature</span>
+                <span class="i-val">低農薬にこだわった新鮮野菜を<br>地域の方に直接お届けします</span>
+            </li>
+            <li>
+                <span class="i-label">Season</span>
+                <span class="i-val">収穫期のみ販売（閑散期は販売なし）<br>販売日：水曜日 午前 ／ 土曜日 午前</span>
+            </li>
+        </ul>
+    </div>
+    <div></div>
+</section>
+
+<!-- ─── CONTACT ─── -->
+<section id="contact">
+    <p class="label">Contact</p>
+    <h2 class="sec-title">お問い合わせ</h2>
+    <p class="contact-note">
+        やました農園へのお問い合わせ・ご注文は<br>
+        下記メールアドレスよりお気軽にどうぞ。
+    </p>
+    <a href="mailto:vegetable.yasai831@gmail.com" class="btn-outline" style="font-size:.9rem; letter-spacing:.1em; text-transform:none;">
+        vegetable.yasai831@gmail.com
+    </a>
+</section>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+    <div>
+        <div class="ft-logo">やました農園</div>
+        <div class="ft-sub">大学生のくせに畑はじめました | すずかけ台駅の近く</div>
+    </div>
+    <div class="ft-copy">© 2025 やました農園</div>
+</footer>
+
+</body>
+</html>
